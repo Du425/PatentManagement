@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -36,12 +39,14 @@ public class Patentmanagement implements Serializable {
     private String number;
 
     @ApiModelProperty("申请日期")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate applyDate;
 
     @ApiModelProperty("专利权人")
     private String owner;
 
     @ApiModelProperty("授权公告日")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate announceDate;
 
     @ApiModelProperty("授权单位")

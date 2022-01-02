@@ -3,6 +3,11 @@ package com.du.patentmanagement.mapper;
 import com.du.patentmanagement.entity.Patentmanagement;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -14,5 +19,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface PatentmanagementMapper extends BaseMapper<Patentmanagement> {
+
+    List<Patentmanagement> queryPatentByCondition(@Param("keyword") String keyword);
 
 }

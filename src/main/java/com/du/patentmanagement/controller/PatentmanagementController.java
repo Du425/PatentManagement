@@ -6,11 +6,10 @@ import com.du.patentmanagement.entity.Patentmanagement;
 import com.du.patentmanagement.mapper.PatentmanagementMapper;
 import com.du.patentmanagement.response.CommonResult;
 import com.du.patentmanagement.service.IPatentmanagementService;
-import com.du.patentmanagement.service.impl.PatentmanagementServiceImpl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
@@ -42,19 +41,22 @@ public class PatentmanagementController {
     }
 
     @GetMapping("queryPatent")
-    public CommonResult queryPatent(@RequestBody Patentmanagement patentmanagement){
+    public CommonResult queryPatent(String keyword, @RequestBody Patentmanagement patentmanagement){
         QueryWrapper<Patentmanagement> wrapper = new QueryWrapper<>();
         wrapper.eq("id",patentmanagement.getId())
+                .or().eq("type",patentmanagement.getType())
                 .or().eq("name",patentmanagement.getName())
                 .or().eq("author",patentmanagement.getAuthor())
                 .or().eq("number",patentmanagement.getNumber())
                 .or().eq("apply_date",patentmanagement.getApplyDate())
                 .or().eq("owner",patentmanagement.getOwner())
-                .or().eq("announce_date",patentmanagement.getAnnounceDate());
+                .or().eq("announce_date",patentmanagement.getAnnounceDate())
+                .or().eq("authorize_unit",patentmanagement.getAuthorizeUnit());
         List<Patentmanagement> patentmanagementList = patentmanagementMapper.selectList(wrapper);
         for (Patentmanagement patentmanagement1 : patentmanagementList) {
             System.out.println(patentmanagement1);
         }
+
         return CommonResult.success("查询成功",patentmanagementList);
     }
     
@@ -89,6 +91,15 @@ public class PatentmanagementController {
         }else {
             return CommonResult.failed("删除失败");
         }
+    }
+
+    @GetMapping("/queryPatentByCondition/{keyword}")
+    public CommonResult queryPatentByCondition(@PathVariable String keyword){
+        List<Patentmanagement> patents = patentmanagementMapper.queryPatentByCondition(keyword);
+        for (Patentmanagement patent : patents) {
+            System.out.println(patent);
+        }
+        return CommonResult.success("查询成功",patents);
     }
 }
 
